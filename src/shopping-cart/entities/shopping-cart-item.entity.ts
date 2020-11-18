@@ -1,18 +1,29 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum ShoppingCartItemType {
+  Book = 'Book',
+  Item = 'Item',
+}
+
 @Entity()
 export class ShoppingCartItem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  referenceUrl: string;
+  referenceId: string;
 
   @Column()
-  userId: string;
+  type: ShoppingCartItemType;
+
+  @Column()
+  owner: string;
 
   @Column()
   title: string;
+
+  @Column()
+  referenceUrl: string;
 
   @Column({ name: 'created_at' })
   createdAt: Date;
@@ -20,3 +31,5 @@ export class ShoppingCartItem {
   @Column({ name: 'updated_at' })
   updatedAt: Date;
 }
+
+
