@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { ShoppingCartService } from './shopping-cart.service';
@@ -13,8 +13,9 @@ export class ShoppingCartController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  findAll() {
-    return this.shoppingCartService.findAll();
+  findByOwner(@Req() req) {
+    const owner = req.user.googleId;
+    return this.shoppingCartService.findByOwner(owner);
   }
 
   @Post()
@@ -26,7 +27,8 @@ export class ShoppingCartController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
-  remove() {
-    return 'remove';
+  remove(@Req() req, @Param('id') id: string) {
+    const owner = req.user.googleId;
+    return this.shoppingCartService.remove(owner, id);
   }
 }
